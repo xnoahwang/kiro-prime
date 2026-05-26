@@ -37,7 +37,6 @@ The optional `init` command also drops starter docs (`progress.md`, project stee
 - Git
 - Kiro IDE installed
 
-(macOS / Linux support: see *Roadmap* below.)
 
 ## Install
 
@@ -162,11 +161,9 @@ git remote set-url origin https://github.com/<you>/kiro-prime.git
 git push -u origin main
 ```
 
-## Roadmap
+## Scope
 
-- macOS / Linux install script (`install.sh`)
-- Optional symbolic-link mode (edit-once, propagate)
-- Per-language steering packs (Python, TypeScript, Go) as opt-in extras
+Windows-only. Built for personal use; shared in case it helps someone with the same setup. Cross-platform, package managers, and other niceties are out of scope — fork it if you need them.
 
 ## License
 
