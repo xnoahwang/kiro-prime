@@ -5,6 +5,7 @@ User-level configuration for [Kiro](https://kiro.dev): Karpathy-derived coding r
 ## Why use this?
 
 - **Save credits.** Kiro plans before it codes, so you catch wrong directions *before* tokens are spent on wrong implementations. Real-world saves on non-trivial tasks: ~40%.
+- **Honest reporting, not blind trust.** Every non-trivial task ends with a Delta Report (files changed, anything outside plan, verify output) so you can spot drift even without reading every diff.
 - **Karpathy discipline, automated.** Surgical changes, simplicity first, verifiable goals, terse output. No more "Great! Let me also refactor this for you" sprawl.
 - **One config, every project.** Install once. Every Kiro chat in every folder picks it up.
 - **Zero lock-in.** One uninstall command and your machine is back to how it was.
