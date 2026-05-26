@@ -25,11 +25,22 @@ Trade-off, honestly: trivial tasks gain one extra round-trip (`<plan>` → `GO`)
 
 After install, every Kiro session in any project gets:
 
+**Discipline (what the AI is told not to do):**
 - **Plan Gate** — Kiro outputs a `<plan>` and waits for your `GO` before writing code on non-trivial tasks.
-- **Karpathy rules** — surgical changes, simplicity first, terse responses, verifiable goals.
-- **Global gitignore** — `__pycache__`, `node_modules`, `.venv`, IDE junk, and OS noise ignored across all repos.
+- **Surgical Changes** — don't touch adjacent code, comments, or formatting; every changed line must trace to the request.
+- **Simplicity** — build only what was asked; no speculative abstractions, no unrequested `flexibility`.
 
-The optional `init` command also drops starter docs (`progress.md`, project steering, project `.gitignore`) into any folder so Kiro has somewhere to write progress and project context.
+**Honest reporting (what the AI is told to produce):**
+- **Pre-flight File List** — every file the AI plans to touch is named in the plan; touching anything else mid-task forces a stop.
+- **Verify Receipt** — exact command and exact output, not `tested and works`.
+- **Edge Case Checklist** — empty / malformed / large input behavior listed for every public function or CLI.
+- **Delta Report** — at the end of every non-trivial task: files changed (with line counts), anything outside plan, signature changes, deleted symbols, verify result.
+
+**Plus:**
+- **Global gitignore** — `__pycache__`, `node_modules`, `.venv`, IDE junk, and OS noise ignored across all repos.
+- **Optional `init` command** — scaffolds project starter docs (`progress.md`, project steering, project `.gitignore`) in any folder.
+
+Together: the AI follows discipline rules *and* must report what it actually did. You can spot drift without reading every diff.
 
 ## Requirements
 
