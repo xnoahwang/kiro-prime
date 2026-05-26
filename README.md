@@ -173,6 +173,13 @@ git remote set-url origin https://github.com/<you>/kiro-prime.git
 git push -u origin main
 ```
 
+## Adapt for other tools
+
+If you use Cursor, Claude Code, Continue, or another AI coding tool, point it at this repo and ask:
+
+> Clone https://github.com/xnoahwang/kiro-prime, read AGENTS.md, and adapt it for [your tool] on my machine.
+
+The agent will figure out the path, patch `install.ps1`, and run it. See [AGENTS.md](AGENTS.md) for the exact procedure it follows.
 ## Scope
 
 Windows-only. Built for personal use; shared in case it helps someone with the same setup. Cross-platform, package managers, and other niceties are out of scope — fork it if you need them.
