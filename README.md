@@ -1,4 +1,4 @@
-# kiro-prime
+﻿# kiro-prime
 
 User-level configuration for [Kiro](https://kiro.dev): Karpathy-derived coding rules, a strict Plan Gate, and a global `.gitignore`. One install, every project benefits.
 
@@ -10,9 +10,11 @@ After install, every Kiro session in any project gets:
 - **Karpathy rules** — surgical changes, simplicity first, terse responses, verifiable goals.
 - **Global gitignore** — `__pycache__`, `node_modules`, `.venv`, IDE junk, and OS noise ignored across all repos.
 
+The optional `init` command also drops starter docs (`progress.md`, project steering, project `.gitignore`) into any folder so Kiro has somewhere to write progress and project context.
+
 ## What it changes
 
-Exactly three things on your machine. Nothing else:
+`install.ps1` touches exactly three things on your machine. Nothing else:
 
 | Path | Source |
 |------|--------|
@@ -21,6 +23,8 @@ Exactly three things on your machine. Nothing else:
 | `git config --global core.excludesfile` | set to `~/.gitignore_global` |
 
 A manifest at `~/.kiro-prime-manifest.json` records what was installed so uninstall is precise.
+
+`init.ps1` only writes inside the project folder you run it from. It never touches anything outside.
 
 ## Requirements
 
@@ -34,7 +38,7 @@ A manifest at `~/.kiro-prime-manifest.json` records what was installed so uninst
 ## Install
 
 ```cmd
-git clone https://github.com/<you>/kiro-prime %USERPROFILE%\kiro-prime
+git clone https://github.com/xnoahwang/kiro-prime %USERPROFILE%\kiro-prime
 cd %USERPROFILE%\kiro-prime
 .\install.ps1
 ```
@@ -48,6 +52,25 @@ Open a new Kiro chat in any folder and ask for a non-trivial task, e.g.:
 > Write a Python CLI that downloads a URL and prints all `<a>` links grouped by domain.
 
 Kiro should respond with a `<plan>` block and stop, waiting for `GO`. If it writes code immediately, Plan Gate didn't load — check `~/.kiro/steering/behavior.md` exists.
+
+## Initialize a project (optional)
+
+After install, scaffold project-level starter docs in any project folder:
+
+```cmd
+cd path\to\your\project
+& "%USERPROFILE%\kiro-prime\init.ps1"
+```
+
+Creates three files in the current directory:
+
+| File | Purpose |
+|------|---------|
+| `progress.md` | Working log Kiro updates after milestones |
+| `.kiro\steering\project.md` | Project-specific tech stack / commands (manual inclusion) |
+| `.gitignore` | Project-specific ignores (secrets, runtime data, Kiro caches) |
+
+Existing files are never overwritten without `-Force`. With `-Force`, they're backed up to `.bak.<timestamp>` first.
 
 ## Customize
 
@@ -76,11 +99,14 @@ This removes only the files recorded in the manifest. Backups created during ins
 .\uninstall.ps1 -RestoreBackups
 ```
 
+`init.ps1` has no uninstaller — it writes plain project files you own. Delete or edit them like any other file in your project.
+
 ## Safety
 
-- Existing files at install paths are preserved as `<file>.bak.<timestamp>` before being overwritten.
-- Uninstall touches only files listed in `~/.kiro-prime-manifest.json`. Your other steering files are not touched.
+- `install.ps1` preserves existing files at install paths as `<file>.bak.<timestamp>` before overwriting.
+- `uninstall.ps1` touches only files listed in `~/.kiro-prime-manifest.json`. Your other steering files are not touched.
 - If you had `core.excludesfile` set before install, uninstall restores that value. Otherwise it unsets the key.
+- `init.ps1` never overwrites without `-Force`.
 - Scripts are short. Read them before running if you want.
 
 ## Push to your own GitHub
