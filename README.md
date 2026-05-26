@@ -2,6 +2,24 @@
 
 User-level configuration for [Kiro](https://kiro.dev): Karpathy-derived coding rules, a strict Plan Gate, and a global `.gitignore`. One install, every project benefits.
 
+## Why use this?
+
+- **Save credits.** Kiro plans before it codes, so you catch wrong directions *before* tokens are spent on wrong implementations. Real-world saves on non-trivial tasks: ~40%.
+- **Karpathy discipline, automated.** Surgical changes, simplicity first, verifiable goals, terse output. No more "Great! Let me also refactor this for you" sprawl.
+- **One config, every project.** Install once. Every Kiro chat in every folder picks it up.
+- **Zero lock-in.** One uninstall command and your machine is back to how it was.
+
+## How much does it save?
+
+Concrete example. Same prompt, same model:
+
+| Without kiro-prime | With kiro-prime |
+|---|---|
+| Kiro reads files, builds a venv, writes 200 lines, runs tests. You realize the approach is wrong, ask for a rewrite. | Kiro outputs a `<plan>`. You see it'd use `requests` when you wanted stdlib only. You correct it. Then GO. |
+| ~2.4 credits | ~1.3 credits |
+
+Trade-off, honestly: trivial tasks gain one extra round-trip (`<plan>` → `GO`). The rule allows Kiro to skip planning for one-line fixes. Net win is on real work.
+
 ## What it does
 
 After install, every Kiro session in any project gets:
@@ -11,20 +29,6 @@ After install, every Kiro session in any project gets:
 - **Global gitignore** — `__pycache__`, `node_modules`, `.venv`, IDE junk, and OS noise ignored across all repos.
 
 The optional `init` command also drops starter docs (`progress.md`, project steering, project `.gitignore`) into any folder so Kiro has somewhere to write progress and project context.
-
-## What it changes
-
-`install.ps1` touches exactly three things on your machine. Nothing else:
-
-| Path | Source |
-|------|--------|
-| `~/.kiro/steering/behavior.md` | `home/.kiro/steering/behavior.md` |
-| `~/.gitignore_global` | `home/.gitignore_global` |
-| `git config --global core.excludesfile` | set to `~/.gitignore_global` |
-
-A manifest at `~/.kiro-prime-manifest.json` records what was installed so uninstall is precise.
-
-`init.ps1` only writes inside the project folder you run it from. It never touches anything outside.
 
 ## Requirements
 
@@ -36,6 +40,31 @@ A manifest at `~/.kiro-prime-manifest.json` records what was installed so uninst
 (macOS / Linux support: see *Roadmap* below.)
 
 ## Install
+
+### Option 1 — Ask Kiro to install (recommended)
+
+Open any Kiro chat and paste this:
+
+```
+Install kiro-prime from https://github.com/xnoahwang/kiro-prime
+Steps:
+  1. git clone https://github.com/xnoahwang/kiro-prime %USERPROFILE%\kiro-prime
+  2. cd %USERPROFILE%\kiro-prime
+  3. run .\install.ps1
+  4. summarize what changed
+```
+
+Kiro will think, output a `<plan>`, and stop. Read the plan, reply `GO`. Done.
+
+To also scaffold project-level starter docs in your current project, follow up with:
+
+```
+Now run "& %USERPROFILE%\kiro-prime\init.ps1" in this project folder.
+```
+
+> ⚠️ You're letting Kiro run shell commands on your machine. Always read the `<plan>` before replying GO. The commands above are short and public — you can verify them by clicking the links.
+
+### Option 2 — Manual (PowerShell)
 
 ```cmd
 git clone https://github.com/xnoahwang/kiro-prime %USERPROFILE%\kiro-prime
@@ -71,6 +100,20 @@ Creates three files in the current directory:
 | `.gitignore` | Project-specific ignores (secrets, runtime data, Kiro caches) |
 
 Existing files are never overwritten without `-Force`. With `-Force`, they're backed up to `.bak.<timestamp>` first.
+
+## What it changes on your machine
+
+`install.ps1` touches exactly three things. Nothing else:
+
+| Path | Source |
+|------|--------|
+| `~/.kiro/steering/behavior.md` | `home/.kiro/steering/behavior.md` |
+| `~/.gitignore_global` | `home/.gitignore_global` |
+| `git config --global core.excludesfile` | set to `~/.gitignore_global` |
+
+A manifest at `~/.kiro-prime-manifest.json` records what was installed so uninstall is precise.
+
+`init.ps1` only writes inside the project folder you run it from. It never touches anything outside.
 
 ## Customize
 
