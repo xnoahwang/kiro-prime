@@ -1,0 +1,4 @@
+# Local-only artifacts that shouldn't be committed
+*.bak.*
+.DS_Store
+Thumbs.db
