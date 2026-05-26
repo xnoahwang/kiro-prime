@@ -12,9 +12,11 @@ The behavior rules are **tool-agnostic** — Plan Gate, Surgical Changes, Pre-fl
 
 If the user asks you to adapt this repo for a different AI coding tool, do the following without asking for clarification on these steps:
 
-1. Identify the target tool's user-level prompt path. Reference table:
+1. Detect the host OS. The original `install.ps1` is Windows-only (PowerShell). For macOS or Linux, you must produce an equivalent `install.sh` (bash, posix-portable) and `uninstall.sh`. Do not delete the `.ps1` files — Windows users still need them.
 
-   | Tool         | User-level prompt path                            |
+2. Identify the target tool's user-level prompt path. Use the matrix below; `~` is the user's home (`%USERPROFILE%` on Windows, `C:\Users\noahw` on macOS/Linux).
+
+   | Tool         | Path (all OSes use `~` form internally)          |
    |--------------|---------------------------------------------------|
    | Kiro         | `~/.kiro/steering/behavior.md`                    |
    | Cursor       | `~/.cursor/rules/behavior.mdc`                    |
@@ -23,7 +25,7 @@ If the user asks you to adapt this repo for a different AI coding tool, do the f
    | Aider        | `~/.aider.conf.yml` `read:` entry                 |
    | Codex CLI    | `~/.codex/AGENTS.md`                              |
 
-   If the target isn't listed, ask the user once for the correct path before proceeding.
+   If the target tool isn't listed, ask the user once for the correct path before proceeding. Do not guess.
 
 2. In `install.ps1`, update the `$Files` array entry whose `Src` is `home\.kiro\steering\behavior.md` so its `Dst` becomes the new target path. Keep `Src` the same — the content of `behavior.md` does **not** need to change.
 
@@ -39,6 +41,25 @@ If the user asks you to adapt this repo for a different AI coding tool, do the f
    - Confirm Plan Gate triggers — the agent should output a `<plan>` block and wait for `GO`.
 
 6. Show the user a Delta Report of every file you changed (per the Self-Review rule in `home/.kiro/steering/behavior.md`).
+
+## OS adaptation (macOS / Linux)
+
+If the host is not Windows, port the installer to bash:
+
+- Translate `install.ps1` → `install.sh`:
+  - shebang: `#!/usr/bin/env bash`
+  - `C:\Users\noahw` → `C:\Users\noahw`
+  - `Copy-Item src dst -Force` → `cp -f src dst`
+  - `New-Item -ItemType Directory -Force` → `mkdir -p`
+  - `Get-Date -Format 'yyyyMMdd-HHmmss'` → `date +%Y%m%d-%H%M%S`
+  - `Set-Content -Encoding UTF8` → plain `cat > file`
+  - `ConvertTo-Json -Depth 6` → `python3 -c` or `jq` to write JSON
+  - Make it executable: `chmod +x install.sh uninstall.sh`
+- Manifest path stays `~/.kiro-prime-manifest.json` and the JSON shape is unchanged, so a Windows user could (in theory) still uninstall a Linux install if they share the file. Don't break that.
+- `git config --global core.excludesfile` is the same command on every OS — keep it.
+- After porting, **run `install.sh` on the host** to verify it works end-to-end. Do not declare done from theory alone.
+
+Keep both `install.ps1` and `install.sh` in the repo so the same fork serves both Windows and Unix users.
 
 ## What you should NOT do
 
@@ -62,6 +83,6 @@ AGENTS.md                         # this file — leave instructions intact
 
 ## Out of scope
 
-- macOS / Linux ports (this fork stays Windows-only unless the user explicitly asks).
+- Pre-bundled macOS / Linux scripts in the upstream repo (they are produced on demand by following the OS adaptation steps above; the upstream stays Windows-first because that's what its author uses).
 - Web UI, telemetry dashboards, or remote config.
 - Per-project overrides — the file is meant to be user-level only.
