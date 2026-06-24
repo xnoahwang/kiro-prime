@@ -1,0 +1,68 @@
+# kiro-prime project .gitignore template
+# Copy this to your project root as .gitignore
+
+# Kiro artifacts
+.kiro/
+*.kiro-session
+*.kiro-context
+
+# Progress tracking (optional - uncomment to keep private)
+# progress.md
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+target/
+.cargo/
+Cargo.lock
+
+# Build outputs
+dist/
+build/
+out/
+*.egg-info/
+*.wasm
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.secret
+*.key
+*.pem
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+htmlcov/
+
+# Temporary
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup

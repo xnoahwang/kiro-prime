@@ -1,0 +1,41 @@
+# kiro-prime global .gitignore
+# Applied to all repos via: git config --global core.excludesfile ~/.gitignore_global
+
+# Kiro artifacts (global)
+*.kiro-session
+*.kiro-context
+.kiro-temp/
+
+# OS-specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Editor backups and swap files
+*~
+*.swp
+*.swo
+*.swn
+.*.sw?
+\#*\#
+.\#*
+
+# IDE metadata (global)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/shelf
+
+# Personal notes
+NOTES.md
+TODO.md
+SCRATCH.md
+.personal/

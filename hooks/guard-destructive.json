@@ -1,0 +1,13 @@
+{
+  "name": "Guard Destructive Operations",
+  "version": "1.0.0",
+  "description": "Warns before potentially destructive file or shell operations",
+  "when": {
+    "type": "preToolUse",
+    "toolTypes": ["write", "shell"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "⚠️ DESTRUCTIVE OPERATION CHECK\n\nBefore proceeding, verify:\n1. Is this operation reversible? (git tracked, backups exist, etc.)\n2. Does it affect shared systems? (databases, APIs, production configs)\n3. Could it have broad blast radius? (recursive deletes, bulk updates)\n\nIf ANY answer is concerning, explain the risk to the user and wait for explicit confirmation.\nIf all answers are safe, proceed immediately without asking."
+  }
+}
